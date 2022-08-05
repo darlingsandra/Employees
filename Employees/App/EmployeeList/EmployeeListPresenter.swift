@@ -26,7 +26,13 @@ extension EmployeeListPresenter: EmployeeListViewOutput {
 }
 extension EmployeeListPresenter: EmployeeListInteractorOutput {
     func receiveEmployeeData(_ employees: [Employee]) {
-        let viewModels = employees.map { EmployeeViewModel(firstName: $0.firstName) }
+        let viewModels = employees.map { employee in
+            EmployeeViewModel(
+                fullName: "\(employee.firstName) \(employee.lastName)",
+                tag: employee.userTag.lowercased(),
+                position: employee.position
+            )
+        }
         view?.setEmployeeData(viewModels)
     }
 }

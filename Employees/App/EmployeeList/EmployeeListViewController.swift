@@ -24,7 +24,6 @@ final class EmployeeListViewController: UIViewController {
     // MARK: - Properties
     var presenter: EmployeeListViewOutput!
     
-    private let cellIdentififer = "Cell"
     private var viewModels: [EmployeeViewModel] = [] {
         didSet {
             tableView.reloadData()
@@ -66,9 +65,13 @@ extension EmployeeListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentififer, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: EmployeeTableViewCell.cellIdentififer,
+            for: indexPath) as? EmployeeTableViewCell else {
+            return UITableViewCell()
+        }
         let viewModel = viewModels[indexPath.row]
-        cell.textLabel?.text = viewModel.firstName
+        cell.configure(viewModel)
         return cell
     }
 }
@@ -76,7 +79,7 @@ extension EmployeeListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension EmployeeListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        44.0
+        84.0
     }
 }
 
@@ -84,7 +87,7 @@ extension EmployeeListViewController: UITableViewDelegate {
 private extension EmployeeListViewController {
     
     func registerCell() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentififer)
+        tableView.register(EmployeeTableViewCell.self, forCellReuseIdentifier: EmployeeTableViewCell.cellIdentififer)
     }
     
     func setupView() {

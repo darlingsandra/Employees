@@ -17,6 +17,12 @@
 		F5896F1C289923610023E073 /* EmployeeListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F1B289923610023E073 /* EmployeeListAssembly.swift */; };
 		F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F1E2899281D0023E073 /* Assemblying.swift */; };
 		F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */; };
+		F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */; };
+		F5E2C4F3289CE2DE005C0110 /* EmployeeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */; };
+		F5E2C4F5289CE2FB005C0110 /* EmployeeInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F4289CE2FB005C0110 /* EmployeeInfoLabel.swift */; };
+		F5E2C4F8289CE363005C0110 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F7289CE363005C0110 /* UIColor+Extension.swift */; };
+		F5E2C4FC289D0B76005C0110 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */; };
+		F5E2C4FD289D0B76005C0110 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +38,12 @@
 		F5896F1B289923610023E073 /* EmployeeListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListAssembly.swift; sourceTree = "<group>"; };
 		F5896F1E2899281D0023E073 /* Assemblying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assemblying.swift; sourceTree = "<group>"; };
 		F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeViewModel.swift; sourceTree = "<group>"; };
+		F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeTableViewCell.swift; sourceTree = "<group>"; };
+		F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeImageView.swift; sourceTree = "<group>"; };
+		F5E2C4F4289CE2FB005C0110 /* EmployeeInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeInfoLabel.swift; sourceTree = "<group>"; };
+		F5E2C4F7289CE363005C0110 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Medium.ttf"; sourceTree = "<group>"; };
+		F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +108,7 @@
 				F5896F17289923340023E073 /* EmployeeListPresenter.swift */,
 				F5896F192899234A0023E073 /* EmployeeListInteractor.swift */,
 				F5896F1B289923610023E073 /* EmployeeListAssembly.swift */,
+				F5E2C4EF289CE278005C0110 /* Views */,
 				F5E2C4E7289BA901005C0110 /* ViewModels */,
 			);
 			path = EmployeeList;
@@ -106,6 +119,8 @@
 			children = (
 				F5896F1D289927C90023E073 /* Protocols */,
 				F5896F14289910420023E073 /* Models */,
+				F5E2C4F6289CE343005C0110 /* Helpers */,
+				F5E2C4F9289D0B38005C0110 /* Fonts */,
 				F5896F1328990FAE0023E073 /* Resources */,
 			);
 			path = Common;
@@ -141,6 +156,33 @@
 				F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F5E2C4EF289CE278005C0110 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */,
+				F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */,
+				F5E2C4F4289CE2FB005C0110 /* EmployeeInfoLabel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F5E2C4F6289CE343005C0110 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F5E2C4F7289CE363005C0110 /* UIColor+Extension.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F5E2C4F9289D0B38005C0110 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */,
+				F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +245,8 @@
 			files = (
 				F5896F0828990B260023E073 /* LaunchScreen.storyboard in Resources */,
 				F5896F0528990B260023E073 /* Assets.xcassets in Resources */,
+				F5E2C4FD289D0B76005C0110 /* Inter-Regular.ttf in Resources */,
+				F5E2C4FC289D0B76005C0110 /* Inter-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,9 +259,13 @@
 			files = (
 				F5896F1C289923610023E073 /* EmployeeListAssembly.swift in Sources */,
 				F5896F0028990B210023E073 /* EmployeeListViewController.swift in Sources */,
+				F5E2C4F3289CE2DE005C0110 /* EmployeeImageView.swift in Sources */,
+				F5E2C4F8289CE363005C0110 /* UIColor+Extension.swift in Sources */,
 				F5896F16289910780023E073 /* Employee.swift in Sources */,
+				F5E2C4F5289CE2FB005C0110 /* EmployeeInfoLabel.swift in Sources */,
 				F5896F1A2899234A0023E073 /* EmployeeListInteractor.swift in Sources */,
 				F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */,
+				F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */,
 				F5896F18289923340023E073 /* EmployeeListPresenter.swift in Sources */,
 				F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */,
 				F5896EFC28990B210023E073 /* AppDelegate.swift in Sources */,
