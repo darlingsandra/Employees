@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct Employee {
+struct EmployeeList: Decodable {
+    let items: [Employee]
+}
+
+struct Employee: Decodable {
     let id: String
     let avatarUrl: String
     let firstName: String

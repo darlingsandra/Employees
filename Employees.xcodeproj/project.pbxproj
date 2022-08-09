@@ -23,6 +23,7 @@
 		F5E2C4F8289CE363005C0110 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F7289CE363005C0110 /* UIColor+Extension.swift */; };
 		F5E2C4FC289D0B76005C0110 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */; };
 		F5E2C4FD289D0B76005C0110 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */; };
+		F5E2C50028A0F733005C0110 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		F5E2C4F7289CE363005C0110 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Medium.ttf"; sourceTree = "<group>"; };
 		F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
+		F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				F5896F1D289927C90023E073 /* Protocols */,
+				F5E2C4FE28A0F6E5005C0110 /* Services */,
 				F5896F14289910420023E073 /* Models */,
 				F5E2C4F6289CE343005C0110 /* Helpers */,
 				F5E2C4F9289D0B38005C0110 /* Fonts */,
@@ -183,6 +186,14 @@
 				F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		F5E2C4FE28A0F6E5005C0110 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +271,7 @@
 				F5896F1C289923610023E073 /* EmployeeListAssembly.swift in Sources */,
 				F5896F0028990B210023E073 /* EmployeeListViewController.swift in Sources */,
 				F5E2C4F3289CE2DE005C0110 /* EmployeeImageView.swift in Sources */,
+				F5E2C50028A0F733005C0110 /* NetworkManager.swift in Sources */,
 				F5E2C4F8289CE363005C0110 /* UIColor+Extension.swift in Sources */,
 				F5896F16289910780023E073 /* Employee.swift in Sources */,
 				F5E2C4F5289CE2FB005C0110 /* EmployeeInfoLabel.swift in Sources */,

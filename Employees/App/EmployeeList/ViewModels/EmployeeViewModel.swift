@@ -12,4 +12,5 @@ struct EmployeeViewModel {
     let fullName: String
     let tag: String
     let position: String
+    let avatarUrl: String
 }

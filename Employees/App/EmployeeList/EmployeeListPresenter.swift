@@ -15,7 +15,7 @@ final class EmployeeListPresenter {
     
     init(view: EmployeeListViewInput, interactor: EmployeeListInteractorInput) {
         self.view = view
-       self.interactor = interactor
+        self.interactor = interactor
     }
 }
 
@@ -30,7 +30,8 @@ extension EmployeeListPresenter: EmployeeListInteractorOutput {
             EmployeeViewModel(
                 fullName: "\(employee.firstName) \(employee.lastName)",
                 tag: employee.userTag.lowercased(),
-                position: employee.position
+                position: employee.position,
+                avatarUrl: employee.avatarUrl
             )
         }
         view?.setEmployeeData(viewModels)

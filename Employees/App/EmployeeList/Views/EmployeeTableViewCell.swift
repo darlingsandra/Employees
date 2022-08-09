@@ -22,6 +22,7 @@ final class EmployeeTableViewCell: UITableViewCell {
     private lazy var fotoImage = EmployeeImageView(size: sizeImage)
     private lazy var trailingSpacerView = UIView()
     private lazy var bottomSpacerView = UIView()
+    private lazy var topSpacerView = UIView()
     
     private lazy var nameStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [nameLabel, tagLabel, trailingSpacerView])
@@ -31,7 +32,7 @@ final class EmployeeTableViewCell: UITableViewCell {
     }()
     
     private lazy var infoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [nameStackView, positionLabel, bottomSpacerView])
+        let stackView = UIStackView(arrangedSubviews: [topSpacerView, nameStackView, positionLabel, bottomSpacerView])
         stackView.axis = .vertical
         stackView.spacing = 3
         return stackView
@@ -71,6 +72,21 @@ final class EmployeeTableViewCell: UITableViewCell {
         nameLabel.text = viewModel.fullName
         tagLabel.text = viewModel.tag
         positionLabel.text = viewModel.position
+        
+        DispatchQueue.global().async {
+            NetworkManager.shared.fetchImage(url: viewModel.avatarUrl) { [weak self] result in
+                switch result {
+                case .success(let dataImage):
+                    DispatchQueue.main.async {
+                        self?.fotoImage.image = UIImage(data: dataImage)
+                    }
+                case .failure(_):
+                    DispatchQueue.main.async {
+                        self?.fotoImage.image = UIImage(named: "Goose")
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -89,12 +105,7 @@ private extension EmployeeTableViewCell {
                 fotoImage.heightAnchor.constraint(equalToConstant: sizeImage),
                 fotoImage.widthAnchor.constraint(equalToConstant: sizeImage),
                 
-                nameLabel.topAnchor.constraint(equalTo: infoStackView.topAnchor, constant: 16),
-                nameLabel.heightAnchor.constraint(equalToConstant: 20),
-                
-                tagLabel.heightAnchor.constraint(equalToConstant: 18),
-                positionLabel.heightAnchor.constraint(equalToConstant: 20),
-                positionLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80)
+                topSpacerView.heightAnchor.constraint(equalToConstant: 16)
             ]
         )
     }

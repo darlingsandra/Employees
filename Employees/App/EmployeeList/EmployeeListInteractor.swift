@@ -26,7 +26,15 @@ final class EmployeeListInteractor {
 
 extension EmployeeListInteractor: EmployeeListInteractorInput {
     func provideEmployeeData() {
-        let employees = Employee.getEmployees()
-        presenter?.receiveEmployeeData(employees)
+        NetworkManager.shared.fetch(
+            dataType: EmployeeList.self,
+            url: API.employeeURL.rawValue) { [weak self] result in
+            switch result {
+            case .success(let employeeList):
+                self?.presenter?.receiveEmployeeData(employeeList.items)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

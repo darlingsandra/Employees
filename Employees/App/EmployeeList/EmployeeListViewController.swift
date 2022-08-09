@@ -40,6 +40,9 @@ final class EmployeeListViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Employee"
+        
         tableView.dataSource = self
         tableView.delegate = self
         
