@@ -11,5 +11,5 @@ import UIKit
 protocol Assemblying {
     /// Собрать VIPER-модуль
     /// - Parameter viewController: UIViewController компонуемого модуля
-    func assembly(viewController: UIViewController)
+    func assembly(viewController: UIViewController, delegate: AnyObject?)
 }

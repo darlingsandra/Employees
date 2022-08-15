@@ -24,6 +24,12 @@
 		F5E2C4FC289D0B76005C0110 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */; };
 		F5E2C4FD289D0B76005C0110 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */; };
 		F5E2C50028A0F733005C0110 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */; };
+		F5E2C50228A3932D005C0110 /* EmployeeListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C50128A3932D005C0110 /* EmployeeListRouter.swift */; };
+		F5E2C50728A393BF005C0110 /* EmployeeErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C50628A393BF005C0110 /* EmployeeErrorViewController.swift */; };
+		F5E2C50928A39C56005C0110 /* EmployeeErrorAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C50828A39C56005C0110 /* EmployeeErrorAssembly.swift */; };
+		F5E2C50B28A39D58005C0110 /* EmployeeErrorRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C50A28A39D58005C0110 /* EmployeeErrorRouter.swift */; };
+		F5E2C50D28A39DB3005C0110 /* EmployeeErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C50C28A39DB3005C0110 /* EmployeeErrorPresenter.swift */; };
+		F5E2C50F28A60D53005C0110 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C50E28A60D53005C0110 /* Inter-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +52,12 @@
 		F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Medium.ttf"; sourceTree = "<group>"; };
 		F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
 		F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		F5E2C50128A3932D005C0110 /* EmployeeListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListRouter.swift; sourceTree = "<group>"; };
+		F5E2C50628A393BF005C0110 /* EmployeeErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeErrorViewController.swift; sourceTree = "<group>"; };
+		F5E2C50828A39C56005C0110 /* EmployeeErrorAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeErrorAssembly.swift; sourceTree = "<group>"; };
+		F5E2C50A28A39D58005C0110 /* EmployeeErrorRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeErrorRouter.swift; sourceTree = "<group>"; };
+		F5E2C50C28A39DB3005C0110 /* EmployeeErrorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeErrorPresenter.swift; sourceTree = "<group>"; };
+		F5E2C50E28A60D53005C0110 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				F5896F1128990C2E0023E073 /* EmployeeList */,
+				F5E2C50328A39342005C0110 /* EmployeeError */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -109,6 +122,7 @@
 				F5896EFF28990B210023E073 /* EmployeeListViewController.swift */,
 				F5896F17289923340023E073 /* EmployeeListPresenter.swift */,
 				F5896F192899234A0023E073 /* EmployeeListInteractor.swift */,
+				F5E2C50128A3932D005C0110 /* EmployeeListRouter.swift */,
 				F5896F1B289923610023E073 /* EmployeeListAssembly.swift */,
 				F5E2C4EF289CE278005C0110 /* Views */,
 				F5E2C4E7289BA901005C0110 /* ViewModels */,
@@ -184,6 +198,7 @@
 			children = (
 				F5E2C4FA289D0B75005C0110 /* Inter-Medium.ttf */,
 				F5E2C4FB289D0B76005C0110 /* Inter-Regular.ttf */,
+				F5E2C50E28A60D53005C0110 /* Inter-SemiBold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -194,6 +209,17 @@
 				F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		F5E2C50328A39342005C0110 /* EmployeeError */ = {
+			isa = PBXGroup;
+			children = (
+				F5E2C50628A393BF005C0110 /* EmployeeErrorViewController.swift */,
+				F5E2C50C28A39DB3005C0110 /* EmployeeErrorPresenter.swift */,
+				F5E2C50A28A39D58005C0110 /* EmployeeErrorRouter.swift */,
+				F5E2C50828A39C56005C0110 /* EmployeeErrorAssembly.swift */,
+			);
+			path = EmployeeError;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +283,7 @@
 				F5896F0828990B260023E073 /* LaunchScreen.storyboard in Resources */,
 				F5896F0528990B260023E073 /* Assets.xcassets in Resources */,
 				F5E2C4FD289D0B76005C0110 /* Inter-Regular.ttf in Resources */,
+				F5E2C50F28A60D53005C0110 /* Inter-SemiBold.ttf in Resources */,
 				F5E2C4FC289D0B76005C0110 /* Inter-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,14 +295,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5E2C50928A39C56005C0110 /* EmployeeErrorAssembly.swift in Sources */,
 				F5896F1C289923610023E073 /* EmployeeListAssembly.swift in Sources */,
 				F5896F0028990B210023E073 /* EmployeeListViewController.swift in Sources */,
 				F5E2C4F3289CE2DE005C0110 /* EmployeeImageView.swift in Sources */,
 				F5E2C50028A0F733005C0110 /* NetworkManager.swift in Sources */,
 				F5E2C4F8289CE363005C0110 /* UIColor+Extension.swift in Sources */,
+				F5E2C50728A393BF005C0110 /* EmployeeErrorViewController.swift in Sources */,
 				F5896F16289910780023E073 /* Employee.swift in Sources */,
+				F5E2C50B28A39D58005C0110 /* EmployeeErrorRouter.swift in Sources */,
 				F5E2C4F5289CE2FB005C0110 /* EmployeeInfoLabel.swift in Sources */,
 				F5896F1A2899234A0023E073 /* EmployeeListInteractor.swift in Sources */,
+				F5E2C50D28A39DB3005C0110 /* EmployeeErrorPresenter.swift in Sources */,
+				F5E2C50228A3932D005C0110 /* EmployeeListRouter.swift in Sources */,
 				F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */,
 				F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */,
 				F5896F18289923340023E073 /* EmployeeListPresenter.swift in Sources */,

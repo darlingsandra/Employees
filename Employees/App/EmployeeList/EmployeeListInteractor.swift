@@ -17,6 +17,7 @@ protocol EmployeeListInteractorInput {
 protocol EmployeeListInteractorOutput: AnyObject {
     /// Получить view модель данных
     func receiveEmployeeData(_ employees: [Employee])
+    func receiveEmployeeDataError()
 }
 
 /// Слой бизнес логики
@@ -32,8 +33,8 @@ extension EmployeeListInteractor: EmployeeListInteractorInput {
             switch result {
             case .success(let employeeList):
                 self?.presenter?.receiveEmployeeData(employeeList.items)
-            case .failure(let error):
-                print(error)
+            case .failure(_):
+                self?.presenter?.receiveEmployeeDataError()
             }
         }
     }

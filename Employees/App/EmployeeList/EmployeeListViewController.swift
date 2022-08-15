@@ -15,7 +15,7 @@ protocol EmployeeListViewInput: AnyObject {
 
 /// Протокол передачи UI - эвентов слою презентации модуля EmployeeList
 protocol EmployeeListViewOutput {
-    /// Инфоррмировать о готовности к загрузки данных
+    /// Информировать о готовности к загрузки данных
     func readyForLoadData()
 }
 
