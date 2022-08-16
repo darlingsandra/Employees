@@ -29,22 +29,25 @@ final class NetworkManager {
             return
         }
 
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else {
-                return completion(.failure(.noData))
+        URLSession.shared.dataTask(with: url) { data, response, error in            
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    let type = try decoder.decode(T.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(type))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(.decodingError))
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    return completion(.failure(.noData))
+                }
             }
             
-            do {
-                let decoder = JSONDecoder()
-                let type = try decoder.decode(T.self, from: data)
-                DispatchQueue.main.async {
-                    completion(.success(type))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(.decodingError))
-                }
-            }
         }.resume()
     }
     
