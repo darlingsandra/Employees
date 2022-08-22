@@ -17,6 +17,7 @@ protocol EmployeeListViewInput: AnyObject {
 protocol EmployeeListViewOutput {
     /// Информировать о готовности к загрузки данных
     func readyForLoadData()
+    func showDetailsInfo(at index: Int)
 }
 
 final class EmployeeListViewController: UIViewController {
@@ -83,6 +84,9 @@ extension EmployeeListViewController: UITableViewDataSource {
 extension EmployeeListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         84.0
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.showDetailsInfo(at: indexPath.row)
     }
 }
 

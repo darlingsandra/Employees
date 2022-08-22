@@ -11,7 +11,7 @@ final class EmployeeErrorAssembly {}
 
 extension EmployeeErrorAssembly: Assemblying {
     
-    func assembly(viewController: UIViewController, delegate: AnyObject?){
+    func assembly(viewController: UIViewController, delegate: AnyObject?, sender: Any?){
         guard let vc = viewController as? EmployeeErrorViewController,
             let delegate = delegate as? EmployeeListRouterDelegate  else { return }
         

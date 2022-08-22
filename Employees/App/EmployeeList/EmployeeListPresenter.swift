@@ -13,6 +13,7 @@ final class EmployeeListPresenter {
     private weak var view: EmployeeListViewInput?
     private let interactor: EmployeeListInteractorInput!
     private let router: EmployeeListRoutable!
+    private var employees: [Employee]?
     
     init(view: EmployeeListViewInput, interactor: EmployeeListInteractorInput, router: EmployeeListRoutable) {
         self.view = view
@@ -25,10 +26,15 @@ extension EmployeeListPresenter: EmployeeListViewOutput {
     func readyForLoadData() {
         interactor.provideEmployeeData()
     }
+    func showDetailsInfo(at index: Int) {
+        guard let sourseView = view, let employee = employees?[index] else { return }
+        router.route(view: sourseView, to: .detailView, with: employee)
+    }
 }
 extension EmployeeListPresenter: EmployeeListInteractorOutput {
     
     func receiveEmployeeData(_ employees: [Employee]) {
+        self.employees = employees
         let viewModels = employees.map { employee in
             EmployeeViewModel(
                 fullName: "\(employee.firstName) \(employee.lastName)",
@@ -42,7 +48,7 @@ extension EmployeeListPresenter: EmployeeListInteractorOutput {
     
     func receiveEmployeeDataError() {
         guard let sourseView = view else { return }
-        router.route(view: sourseView, to: .errorView)
+        router.route(view: sourseView, to: .errorView, with: nil)
     }
 }
 

@@ -17,4 +17,7 @@ extension UIColor {
     static var pearlLightGray: UIColor {
         UIColor(red: 0.591, green: 0.591, blue: 0.609, alpha: 1)
     }
+    static var lightGray: UIColor {
+        UIColor(red: 0.969, green: 0.969, blue: 0.973, alpha: 1)
+    }
 }

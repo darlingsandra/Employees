@@ -9,11 +9,12 @@ import UIKit
 
 enum Target {
     case tableView
+    case detailView
     case errorView
 }
 
 protocol EmployeeListRoutable {
-    func route(view: EmployeeListViewInput, to target: Target)
+    func route(view: EmployeeListViewInput, to target: Target, with data: Employee?)
 }
 
 /// Протокол передачи данных слою презентации модуля EmployeeList
@@ -31,12 +32,17 @@ final class EmployeeListRouter {
 }
 
 extension EmployeeListRouter: EmployeeListRoutable {
-    func route(view: EmployeeListViewInput, to target: Target) {
+    func route(view: EmployeeListViewInput, to target: Target, with data: Employee? = nil) {
+        guard let sourceView = view as? UIViewController else { return }
         if target == .errorView {
-            guard let sourceView = view as? UIViewController else { return }
             let nextView = EmployeeErrorViewController()
-            EmployeeErrorAssembly().assembly(viewController: nextView, delegate: self)
+            EmployeeErrorAssembly().assembly(viewController: nextView, delegate: self, sender: nil)
             sourceView.present(nextView, animated: true)
+        }
+        if target == .detailView {
+            let nextView = EmployeeDetailsViewController()
+            EmployeeDetailsAssembly().assembly(viewController: nextView, sender: data)
+            sourceView.navigationController?.pushViewController(nextView, animated: true)
         }
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 final class EmployeeListAssembly {}
 
 extension EmployeeListAssembly: Assemblying {
-    func assembly(viewController: UIViewController, delegate: AnyObject? = nil) {
+    func assembly(viewController: UIViewController, delegate: AnyObject? = nil, sender: Any? = nil) {
         guard let vc = viewController as? EmployeeListViewController else { return }
         let interactor = EmployeeListInteractor()
         let router = EmployeeListRouter()
