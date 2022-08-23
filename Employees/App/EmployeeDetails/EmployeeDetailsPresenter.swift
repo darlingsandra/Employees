@@ -28,7 +28,8 @@ extension EmployeeDetailsPresenter: EmployeeDetailsViewOutput {
             avatarUrl: employee.avatarUrl,
             age: getAge(from: employee.birthday) ?? "",
             birthday: getFormatDate(from: employee.birthday) ?? "",
-            phone: employee.phone
+            phone: getFormatPhone(phoneNumber: employee.phone, cleanNumber: false) ?? "",
+            call: getFormatPhone(phoneNumber: employee.phone, cleanNumber: true) ?? ""
         )
         view?.setEmployeeData(viewModel: viewModel)
     }
@@ -46,6 +47,29 @@ private extension EmployeeDetailsPresenter {
         return nil
     }
     
+    func getFormatPhone(phoneNumber: String, cleanNumber: Bool) -> String? {
+        do {
+            let regex = try NSRegularExpression(pattern: "[\\s-]")
+            let range = NSString(string: phoneNumber).range(of: phoneNumber)
+            var number = regex.stringByReplacingMatches(in: phoneNumber, range: range, withTemplate: "")
+            
+            guard number.count == 10 else { return nil }
+            guard !cleanNumber else { return "+7" + number }
+            
+            let pattern = "(\\d{3})(\\d{3})(\\d{2})(\\d+)"
+            let maxIndex = number.index(number.startIndex, offsetBy: number.count - 1)
+            number = number.replacingOccurrences(
+                of: pattern,
+                with: "($1) $2 $3 $4",
+                options: .regularExpression,
+                range: number.startIndex..<maxIndex
+            )
+            return "+7 " + number
+        } catch {
+            return nil
+        }
+    }
+    
     func getAge(from string: String) -> String? {
         let currentDateComponents = Calendar.current.dateComponents([.year], from: Date())
         guard let currentYear = currentDateComponents.year else { return nil }
@@ -59,4 +83,5 @@ private extension EmployeeDetailsPresenter {
         }
         return nil
     }
+    
 }

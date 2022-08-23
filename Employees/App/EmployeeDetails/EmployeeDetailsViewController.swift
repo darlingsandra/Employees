@@ -32,11 +32,11 @@ class EmployeeDetailsViewController: UIViewController {
             tagLabel.text = viewModel?.tag
             positionLabel.text = viewModel?.position
             birthdayLabel.text = viewModel?.birthday
-            phoneLabel.text = viewModel?.phone
             ageLabel.text = viewModel?.age
+            setTitlePhone(button: phoneButton, title: viewModel?.phone ?? "")
         }
     }
-    
+        
     private lazy var fotoImage = EmployeeImageView(size: sizeImage)
     
     private lazy var topSpacerView = UIView()
@@ -80,11 +80,12 @@ class EmployeeDetailsViewController: UIViewController {
         return label
     }()
     
-    private var phoneLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Inter-Medium", size: 16)
-        label.textColor = .blackAmber
-        return label
+    private lazy var phoneButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(.blackAmber, for: .normal)
+        button.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
+        button.addTarget(self, action: #selector(tapPhoneButton), for: .touchUpInside)
+        return button
     }()
     
     private lazy var nameStackView: UIStackView = {
@@ -113,8 +114,8 @@ class EmployeeDetailsViewController: UIViewController {
     }()
         
     private lazy var detailsStackView: UIStackView = {
-        let birthdayStackView = getDetailsRowView(icon: "star", label: birthdayLabel)
-        let phoneStackView = getDetailsRowView(icon: "phone", label: phoneLabel)
+        let birthdayStackView = getDetailsRowView(icon: "star", element: birthdayLabel)
+        let phoneStackView = getDetailsRowView(icon: "phone", element: phoneButton)
         let stackViewAge = UIStackView(arrangedSubviews: [birthdayStackView, ageLabel])
         stackViewAge.distribution = .equalSpacing
         let stackView = UIStackView(arrangedSubviews: [stackViewAge, phoneStackView, bottomSpacerView])
@@ -144,6 +145,12 @@ class EmployeeDetailsViewController: UIViewController {
         presenter.readyShowData()
         setupView()
     }
+    
+    @objc func tapPhoneButton() {
+        if let url = URL(string: "tel://\(viewModel?.call ?? "")") {
+            UIApplication.shared.open(url)
+        }
+    }
 }
 
 // MARK: - EmployeeDetailsViewInput
@@ -170,6 +177,9 @@ private extension EmployeeDetailsViewController {
             [
                 topSpacerView.heightAnchor.constraint(equalToConstant: 72),
                 fotoImage.heightAnchor.constraint(equalToConstant: sizeImage),
+                
+                birthdayLabel.heightAnchor.constraint(equalToConstant: 20),
+                phoneButton.heightAnchor.constraint(equalToConstant: 20),
 
                 stackView.topAnchor.constraint(equalTo: view.topAnchor),
                 stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -179,12 +189,21 @@ private extension EmployeeDetailsViewController {
         )
     }
     
-    func getDetailsRowView(icon: String, label: UILabel) -> UIStackView {
+    func setTitlePhone(button: UIButton, title: String) {
+        let attributedFont = UIFont(name: "Inter-Medium", size: 16) ?? .systemFont(ofSize: 16)
+        let attributedText = NSAttributedString(
+            string: title,
+            attributes: [NSAttributedString.Key.font: attributedFont]
+        )
+        button.setAttributedTitle(attributedText, for: .normal)
+    }
+    
+    func getDetailsRowView<T: UIView>(icon: String, element: T) -> UIStackView {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: icon)
         imageView.tintColor = .blackAmber
         NSLayoutConstraint.activate([imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)])
-        let stackView = UIStackView(arrangedSubviews: [imageView, label])
+        let stackView = UIStackView(arrangedSubviews: [imageView, element])
         stackView.spacing = 12
         return stackView
     }

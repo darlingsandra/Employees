@@ -16,4 +16,5 @@ struct EmployeeDetailsViewModel {
     let age: String
     let birthday: String
     let phone: String
+    let call: String
 }

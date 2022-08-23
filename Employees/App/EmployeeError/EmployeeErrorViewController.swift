@@ -47,7 +47,7 @@ class EmployeeErrorViewController: UIViewController {
         return label
     }()
     
-    private let updateButton: UIButton = {
+    private lazy var updateButton: UIButton = {
         let button = UIButton(type: .system)
         let attributedFont = UIFont(name: "Inter-SemiBold", size: 16) ?? .systemFont(ofSize: 16)
         let attributedText = NSAttributedString(
