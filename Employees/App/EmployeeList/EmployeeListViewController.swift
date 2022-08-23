@@ -24,10 +24,14 @@ final class EmployeeListViewController: UIViewController {
 
     // MARK: - Properties
     var presenter: EmployeeListViewOutput!
+    var refreshControl: UIRefreshControl!
     
     private var viewModels: [EmployeeViewModel] = [] {
         didSet {
             tableView.reloadData()
+            if refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
         }
     }
     private var tableView: UITableView = {
@@ -51,6 +55,10 @@ final class EmployeeListViewController: UIViewController {
         setupView()
         
         assembler.assembly(viewController: self)
+        presenter.readyForLoadData()
+    }
+    
+    @objc func refresh() {
         presenter.readyForLoadData()
     }
 }
@@ -87,6 +95,8 @@ extension EmployeeListViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter.showDetailsInfo(at: indexPath.row)
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = false
     }
 }
 
@@ -99,6 +109,9 @@ private extension EmployeeListViewController {
     
     func setupView() {
         self.view.addSubview(tableView)
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate(
