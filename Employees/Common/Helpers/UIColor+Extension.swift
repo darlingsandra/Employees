@@ -20,4 +20,7 @@ extension UIColor {
     static var lightGray: UIColor {
         UIColor(red: 0.969, green: 0.969, blue: 0.973, alpha: 1)
     }
+    static var customPurple: UIColor {
+        UIColor(red: 0.765, green: 0.765, blue: 0.776, alpha: 1)
+    }
 }

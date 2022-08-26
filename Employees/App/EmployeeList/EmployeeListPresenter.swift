@@ -40,7 +40,8 @@ extension EmployeeListPresenter: EmployeeListInteractorOutput {
                 fullName: "\(employee.firstName) \(employee.lastName)",
                 tag: employee.userTag.lowercased(),
                 position: employee.position,
-                avatarUrl: employee.avatarUrl
+                avatarUrl: employee.avatarUrl,
+                department: employee.department
             )
         }
         view?.setEmployeeData(viewModels)

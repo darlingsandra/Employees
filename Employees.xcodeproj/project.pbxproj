@@ -35,6 +35,8 @@
 		F5E2C51928AB687C005C0110 /* EmployeeDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C51828AB687C005C0110 /* EmployeeDetailsPresenter.swift */; };
 		F5E2C51B28AB7B69005C0110 /* EmployeeDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C51A28AB7B69005C0110 /* EmployeeDetailsViewModel.swift */; };
 		F5E2C51D28AB872B005C0110 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5E2C51C28AB872B005C0110 /* Inter-Bold.ttf */; };
+		F5FB342728B86B8100C4A0C4 /* CustomSegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FB342628B86B8000C4A0C4 /* CustomSegmentedButton.swift */; };
+		F5FB342928B8927C00C4A0C4 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FB342828B8927C00C4A0C4 /* CustomSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,8 @@
 		F5E2C51828AB687C005C0110 /* EmployeeDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDetailsPresenter.swift; sourceTree = "<group>"; };
 		F5E2C51A28AB7B69005C0110 /* EmployeeDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDetailsViewModel.swift; sourceTree = "<group>"; };
 		F5E2C51C28AB872B005C0110 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
+		F5FB342628B86B8000C4A0C4 /* CustomSegmentedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedButton.swift; sourceTree = "<group>"; };
+		F5FB342828B8927C00C4A0C4 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +196,8 @@
 				F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */,
 				F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */,
 				F5E2C4F4289CE2FB005C0110 /* EmployeeInfoLabel.swift */,
+				F5FB342828B8927C00C4A0C4 /* CustomSegmentedControl.swift */,
+				F5FB342628B86B8000C4A0C4 /* CustomSegmentedButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -333,6 +339,7 @@
 				F5E2C4F5289CE2FB005C0110 /* EmployeeInfoLabel.swift in Sources */,
 				F5896F1A2899234A0023E073 /* EmployeeListInteractor.swift in Sources */,
 				F5E2C50D28A39DB3005C0110 /* EmployeeErrorPresenter.swift in Sources */,
+				F5FB342728B86B8100C4A0C4 /* CustomSegmentedButton.swift in Sources */,
 				F5E2C50228A3932D005C0110 /* EmployeeListRouter.swift in Sources */,
 				F5E2C51528AB61D4005C0110 /* EmployeeDetailsViewController.swift in Sources */,
 				F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */,
@@ -341,6 +348,7 @@
 				F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */,
 				F5E2C51928AB687C005C0110 /* EmployeeDetailsPresenter.swift in Sources */,
 				F5896EFC28990B210023E073 /* AppDelegate.swift in Sources */,
+				F5FB342928B8927C00C4A0C4 /* CustomSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

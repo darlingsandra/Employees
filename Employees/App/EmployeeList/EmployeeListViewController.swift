@@ -24,16 +24,23 @@ final class EmployeeListViewController: UIViewController {
 
     // MARK: - Properties
     var presenter: EmployeeListViewOutput!
-    var refreshControl: UIRefreshControl!
     
     private var viewModels: [EmployeeViewModel] = [] {
         didSet {
-            tableView.reloadData()
+            searchData()
             if refreshControl.isRefreshing {
                 refreshControl.endRefreshing()
             }
         }
     }
+    
+    private var filteredViewModels: [EmployeeViewModel] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
+    private var curentTab: CustomSegmentedButton!
     private var tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
@@ -41,6 +48,9 @@ final class EmployeeListViewController: UIViewController {
     }()
     
     private let assembler = EmployeeListAssembly()
+        
+    private var refreshControl: UIRefreshControl!
+    private var customSegmentedControl: CustomSegmentedControl!
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -61,6 +71,27 @@ final class EmployeeListViewController: UIViewController {
     @objc func refresh() {
         presenter.readyForLoadData()
     }
+    
+    @objc func valueChangedTab(sender: UIButton) {
+    
+        for button in customSegmentedControl.tabs {
+            button.isSelected = button == sender
+            if button.isSelected {
+                curentTab = button
+                searchData()
+            }
+        }
+    }
+    
+    func searchData() {
+        guard let index = customSegmentedControl.tabs.firstIndex(of: curentTab) else { return }
+        let filter = Department.allCases[index]
+        if filter != Department.all {
+            filteredViewModels = viewModels.filter { $0.department == filter.name}
+        } else {
+            filteredViewModels = viewModels
+        }
+    }
 }
 
 // MARK: - EmployeeListViewInput
@@ -73,7 +104,7 @@ extension EmployeeListViewController: EmployeeListViewInput {
 // MARK: - UITableViewDataSource
 extension EmployeeListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModels.count
+        filteredViewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -82,7 +113,7 @@ extension EmployeeListViewController: UITableViewDataSource {
             for: indexPath) as? EmployeeTableViewCell else {
             return UITableViewCell()
         }
-        let viewModel = viewModels[indexPath.row]
+        let viewModel = filteredViewModels[indexPath.row]
         cell.configure(viewModel)
         return cell
     }
@@ -113,6 +144,18 @@ private extension EmployeeListViewController {
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let segmentedControlWidth = navigationController?.navigationBar.frame.size.width ?? 0
+        customSegmentedControl = CustomSegmentedControl(items:  Department.allCases.map { $0.rawValue } )
+        customSegmentedControl.addTarget(self, action: #selector(valueChangedTab(sender: )))
+        customSegmentedControl.frame = CGRect(x: 0, y: 0, width: segmentedControlWidth, height: 50)
+        navigationItem.titleView = customSegmentedControl
+        curentTab = customSegmentedControl.tabs.first
+        
+        navigationItem.titleView?.translatesAutoresizingMaskIntoConstraints = false
+        navigationItem.titleView?.setNeedsLayout()
+        navigationItem.titleView?.layoutIfNeeded()
+        navigationItem.titleView?.translatesAutoresizingMaskIntoConstraints = true
         
         NSLayoutConstraint.activate(
             [

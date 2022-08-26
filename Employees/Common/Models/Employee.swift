@@ -7,6 +7,40 @@
 
 import Foundation
 
+enum Department: String, CaseIterable {
+    case all = "Все"
+    case android = "Android"
+    case ios = "iOS"
+    case design = "Дизайн"
+    case management = "Менеджмент"
+    case qa = "QA"
+    case back_office = "Бэк-офис"
+    case frontend = "Frontend"
+    case hr = "HR"
+    case pr = "PR"
+    case backend = "Backend"
+    case support = "Техподдержка"
+    case analytics = "Аналитика"
+    
+    var name: String {
+        switch self {
+        case .all: return "all"
+        case .android: return "android"
+        case .ios: return "ios"
+        case .design: return "design"
+        case .management: return "management"
+        case .qa: return "qa"
+        case .back_office: return "back_office"
+        case .frontend: return "frontend"
+        case .hr: return "hr"
+        case .pr: return "pr"
+        case .backend: return "backend"
+        case .support: return "support"
+        case .analytics: return "analytics"
+        }
+    }
+}
+
 struct EmployeeList: Decodable {
     let items: [Employee]
 }
