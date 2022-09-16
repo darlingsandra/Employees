@@ -16,6 +16,7 @@
 		F5896F1A2899234A0023E073 /* EmployeeListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F192899234A0023E073 /* EmployeeListInteractor.swift */; };
 		F5896F1C289923610023E073 /* EmployeeListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F1B289923610023E073 /* EmployeeListAssembly.swift */; };
 		F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F1E2899281D0023E073 /* Assemblying.swift */; };
+		F5A23DEE28CED7B1006F5D2B /* EmployeeNoFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DED28CED7B0006F5D2B /* EmployeeNoFound.swift */; };
 		F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */; };
 		F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */; };
 		F5E2C4F3289CE2DE005C0110 /* EmployeeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */; };
@@ -51,6 +52,7 @@
 		F5896F192899234A0023E073 /* EmployeeListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListInteractor.swift; sourceTree = "<group>"; };
 		F5896F1B289923610023E073 /* EmployeeListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListAssembly.swift; sourceTree = "<group>"; };
 		F5896F1E2899281D0023E073 /* Assemblying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assemblying.swift; sourceTree = "<group>"; };
+		F5A23DED28CED7B0006F5D2B /* EmployeeNoFound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeNoFound.swift; sourceTree = "<group>"; };
 		F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeViewModel.swift; sourceTree = "<group>"; };
 		F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeTableViewCell.swift; sourceTree = "<group>"; };
 		F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeImageView.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				F5E2C4F4289CE2FB005C0110 /* EmployeeInfoLabel.swift */,
 				F5FB342828B8927C00C4A0C4 /* CustomSegmentedControl.swift */,
 				F5FB342628B86B8000C4A0C4 /* CustomSegmentedButton.swift */,
+				F5A23DED28CED7B0006F5D2B /* EmployeeNoFound.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 			files = (
 				F5E2C50928A39C56005C0110 /* EmployeeErrorAssembly.swift in Sources */,
 				F5E2C51B28AB7B69005C0110 /* EmployeeDetailsViewModel.swift in Sources */,
+				F5A23DEE28CED7B1006F5D2B /* EmployeeNoFound.swift in Sources */,
 				F5896F1C289923610023E073 /* EmployeeListAssembly.swift in Sources */,
 				F5E2C51728AB67A5005C0110 /* EmployeeDetailsAssembly.swift in Sources */,
 				F5896F0028990B210023E073 /* EmployeeListViewController.swift in Sources */,

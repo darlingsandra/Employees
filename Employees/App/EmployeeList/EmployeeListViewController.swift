@@ -17,7 +17,7 @@ protocol EmployeeListViewInput: AnyObject {
 protocol EmployeeListViewOutput {
     /// Информировать о готовности к загрузки данных
     func readyForLoadData()
-    func showDetailsInfo(at index: Int)
+    func showDetailsInfo(at id: String)
 }
 
 final class EmployeeListViewController: UIViewController {
@@ -25,9 +25,10 @@ final class EmployeeListViewController: UIViewController {
     // MARK: - Properties
     var presenter: EmployeeListViewOutput!
     
+    private let assembler = EmployeeListAssembly()
     private var viewModels: [EmployeeViewModel] = [] {
         didSet {
-            searchData()
+            filterContentForSearchText(searchBar.text ?? "", category: category)
             if refreshControl.isRefreshing {
                 refreshControl.endRefreshing()
             }
@@ -37,21 +38,73 @@ final class EmployeeListViewController: UIViewController {
     private var filteredViewModels: [EmployeeViewModel] = [] {
         didSet {
             tableView.reloadData()
+            if dataLoadingFinished {
+                employeeNoFoundView.isHidden = !(filteredViewModels.count == 0)
+            }
         }
     }
     
+    private var keyboardHeight: CGFloat = 0.0 {
+        didSet {
+            bottomConstraintView.constant = -keyboardHeight
+            view.layoutIfNeeded()
+        }
+    }
+    
+    private var isSearchBarEmpty: Bool {
+      return searchBar.text?.isEmpty ?? true
+    }
+    
+    private var category: Department {
+        guard customSegmentedControl.tabs.count > 0,
+                let index = customSegmentedControl.tabs.firstIndex(of: curentTab)
+            else { return .all}
+        return Department.allCases[index]
+    }
+    
+    private var dataLoadingFinished: Bool = false
+    private var bottomConstraintView: NSLayoutConstraint!
     private var curentTab: CustomSegmentedButton!
-    private var tableView: UITableView = {
+    
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+         
+    private lazy var topView: UIView = {
+        let topView = UIView()
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        return topView
+    }()
     
-    private let assembler = EmployeeListAssembly()
-        
-    private var refreshControl: UIRefreshControl!
-    private var customSegmentedControl: CustomSegmentedControl!
-
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.searchBarStyle = .minimal
+        let textField = searchBar.value(forKey: "searchField") as? UITextField
+        textField?.font = UIFont(name: "Inter-Medium", size: 15) ?? .systemFont(ofSize: 15)
+        searchBar.placeholder = "Введи имя, тег..."
+        searchBar.setValue("Отмена", forKey: "cancelButtonText")
+        return searchBar
+    }()
+    
+    private lazy var customSegmentedControl: CustomSegmentedControl = {
+        let customSegmentedControl = CustomSegmentedControl(items:  Department.allCases.map { $0.rawValue } )
+        customSegmentedControl.addTarget(self, action: #selector(valueChangedTab(sender: )))
+        curentTab = customSegmentedControl.tabs.first
+        return customSegmentedControl
+    }()
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    private lazy var employeeNoFoundView: EmployeeNoFound = EmployeeNoFound()
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,11 +114,27 @@ final class EmployeeListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
+        searchBar.delegate = self
+        
         registerCell()
         setupView()
         
         assembler.assembly(viewController: self)
         presenter.readyForLoadData()
+        
+        registerForKeyboardNotifications()
+    }
+    
+    deinit {
+        removeKeyboardNotifications()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = false
     }
     
     @objc func refresh() {
@@ -78,19 +147,19 @@ final class EmployeeListViewController: UIViewController {
             button.isSelected = button == sender
             if button.isSelected {
                 curentTab = button
-                searchData()
+                filterContentForSearchText(searchBar.text ?? "", category: category)
             }
         }
     }
     
-    func searchData() {
-        guard let index = customSegmentedControl.tabs.firstIndex(of: curentTab) else { return }
-        let filter = Department.allCases[index]
-        if filter != Department.all {
-            filteredViewModels = viewModels.filter { $0.department == filter.name}
-        } else {
-            filteredViewModels = viewModels
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            keyboardHeight = keyboardFrame.cgRectValue.height
         }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        keyboardHeight = 0
     }
 }
 
@@ -98,6 +167,7 @@ final class EmployeeListViewController: UIViewController {
 extension EmployeeListViewController: EmployeeListViewInput {
     func setEmployeeData(_ viewModels: [EmployeeViewModel]) {
         self.viewModels = viewModels
+        dataLoadingFinished = true
     }
 }
 
@@ -125,9 +195,29 @@ extension EmployeeListViewController: UITableViewDelegate {
         84.0
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.showDetailsInfo(at: indexPath.row)
+        let employeeVM = filteredViewModels[indexPath.row]
+        presenter.showDetailsInfo(at: employeeVM.id)
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.isSelected = false
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension EmployeeListViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filterContentForSearchText(searchBar.text!, category: category)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = nil
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
+        
+        filterContentForSearchText(searchBar.text!, category: category)
     }
 }
 
@@ -140,30 +230,82 @@ private extension EmployeeListViewController {
     
     func setupView() {
         self.view.addSubview(tableView)
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+                        
+        topView.addSubview(searchBar)
+        topView.addSubview(customSegmentedControl)
         
-        let segmentedControlWidth = navigationController?.navigationBar.frame.size.width ?? 0
-        customSegmentedControl = CustomSegmentedControl(items:  Department.allCases.map { $0.rawValue } )
-        customSegmentedControl.addTarget(self, action: #selector(valueChangedTab(sender: )))
-        customSegmentedControl.frame = CGRect(x: 0, y: 0, width: segmentedControlWidth, height: 50)
-        navigationItem.titleView = customSegmentedControl
-        curentTab = customSegmentedControl.tabs.first
+        self.view.addSubview(employeeNoFoundView)
+        self.view.addSubview(topView)
         
-        navigationItem.titleView?.translatesAutoresizingMaskIntoConstraints = false
-        navigationItem.titleView?.setNeedsLayout()
-        navigationItem.titleView?.layoutIfNeeded()
-        navigationItem.titleView?.translatesAutoresizingMaskIntoConstraints = true
+        view.backgroundColor = .white
         
+        employeeNoFoundView.isHidden = true
+        bottomConstraintView = employeeNoFoundView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+     
         NSLayoutConstraint.activate(
             [
-                tableView.topAnchor.constraint(equalTo: view.topAnchor),
+                topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                topView.heightAnchor.constraint(equalToConstant: 90),
+                
+                tableView.topAnchor.constraint(equalTo: topView.bottomAnchor),
                 tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                
+                employeeNoFoundView.topAnchor.constraint(equalTo: topView.bottomAnchor),
+                employeeNoFoundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                employeeNoFoundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                bottomConstraintView,
+                
+                searchBar.topAnchor.constraint(equalTo: topView.topAnchor),
+                searchBar.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 8),
+                searchBar.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -8),
+                searchBar.heightAnchor.constraint(equalToConstant: 40),
+                
+                customSegmentedControl.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 14),
+                customSegmentedControl.leadingAnchor.constraint(equalTo: topView.leadingAnchor),
+                customSegmentedControl.trailingAnchor.constraint(equalTo: topView.trailingAnchor),
+                customSegmentedControl.heightAnchor.constraint(equalToConstant: 36),
             ]
         )
     }
+    
+    func filterContentForSearchText(_ searchText: String, category: Department = .all) {
+        filteredViewModels = viewModels.filter { (employee: EmployeeViewModel) -> Bool in
+            let doesCategoryMatch = category == .all || employee.department == category.name
+            
+            if isSearchBarEmpty {
+                return doesCategoryMatch
+            } else {
+                let doesSearch = employee.fullName.lowercased().contains(searchText.lowercased())
+                    || employee.tag.lowercased().contains(searchText.lowercased())
+                
+                return doesCategoryMatch && doesSearch
+            }
+        }
+    }
+    
+    func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    func removeKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
 }
+

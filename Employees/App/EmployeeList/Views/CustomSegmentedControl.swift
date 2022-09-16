@@ -29,7 +29,6 @@ private extension CustomSegmentedControl {
     
     func configure(items: [String]) {
         tabs = items.map { CustomSegmentedButton(title: $0) }
-        tabs.first?.isSelected = true
         
         let underlineView = UIView()
         underlineView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,6 +51,13 @@ private extension CustomSegmentedControl {
             stackView.topAnchor.constraint(equalTo: self.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+        ])
+        
+        guard let fistTab = tabs.first else { return }
+        fistTab.isSelected = true
+        
+        NSLayoutConstraint.activate([
+            fistTab.leadingAnchor.constraint(equalTo: buttonStackView.leadingAnchor, constant: 16)
         ])
     }    
 }

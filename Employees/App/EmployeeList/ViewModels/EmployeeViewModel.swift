@@ -9,6 +9,7 @@ import Foundation
 
 /// View модель модуля EmployeeList
 struct EmployeeViewModel {
+    let id: String
     let fullName: String
     let tag: String
     let position: String

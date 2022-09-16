@@ -26,8 +26,9 @@ extension EmployeeListPresenter: EmployeeListViewOutput {
     func readyForLoadData() {
         interactor.provideEmployeeData()
     }
-    func showDetailsInfo(at index: Int) {
-        guard let sourseView = view, let employee = employees?[index] else { return }
+    func showDetailsInfo(at id: String) {
+        let employeeFist = employees?.first { $0.id == id }
+        guard let sourseView = view, let employee = employeeFist else { return }
         router.route(view: sourseView, to: .detailView, with: employee)
     }
 }
@@ -37,6 +38,7 @@ extension EmployeeListPresenter: EmployeeListInteractorOutput {
         self.employees = employees
         let viewModels = employees.map { employee in
             EmployeeViewModel(
+                id: employee.id,
                 fullName: "\(employee.firstName) \(employee.lastName)",
                 tag: employee.userTag.lowercased(),
                 position: employee.position,

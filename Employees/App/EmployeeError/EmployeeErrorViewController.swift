@@ -107,6 +107,7 @@ class EmployeeErrorViewController: UIViewController {
 // MARK: - Private method
 private extension EmployeeErrorViewController {
     func setupView() {
+        view.backgroundColor = .white
         self.view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
