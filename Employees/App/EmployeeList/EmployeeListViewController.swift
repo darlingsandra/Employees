@@ -85,6 +85,8 @@ final class EmployeeListViewController: UIViewController {
         searchBar.searchBarStyle = .minimal
         let textField = searchBar.value(forKey: "searchField") as? UITextField
         textField?.font = UIFont(name: "Inter-Medium", size: 15) ?? .systemFont(ofSize: 15)
+        textField?.spellCheckingType = .no
+        textField?.autocorrectionType = .no
         searchBar.placeholder = "Введи имя, тег..."
         searchBar.setValue("Отмена", forKey: "cancelButtonText")
         return searchBar
