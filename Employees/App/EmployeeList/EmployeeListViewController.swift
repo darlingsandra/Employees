@@ -113,6 +113,7 @@ final class EmployeeListViewController: UIViewController {
         
         title = "Employee"
         
+        tableView.keyboardDismissMode = .onDrag
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -137,6 +138,10 @@ final class EmployeeListViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        searchBar.endEditing(true)
     }
     
     @objc func refresh() {
