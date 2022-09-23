@@ -126,6 +126,8 @@ final class EmployeeListViewController: UIViewController {
         presenter.readyForLoadData()
         
         registerForKeyboardNotifications()
+        
+        ThemeManager.applyTheme()
     }
     
     deinit {

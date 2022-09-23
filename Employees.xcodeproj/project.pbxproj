@@ -17,6 +17,7 @@
 		F5896F1C289923610023E073 /* EmployeeListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F1B289923610023E073 /* EmployeeListAssembly.swift */; };
 		F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F1E2899281D0023E073 /* Assemblying.swift */; };
 		F5A23DEE28CED7B1006F5D2B /* EmployeeNoFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DED28CED7B0006F5D2B /* EmployeeNoFound.swift */; };
+		F5A23DF028DD9BB0006F5D2B /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DEF28DD9BAF006F5D2B /* ThemeManager.swift */; };
 		F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */; };
 		F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */; };
 		F5E2C4F3289CE2DE005C0110 /* EmployeeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */; };
@@ -53,6 +54,7 @@
 		F5896F1B289923610023E073 /* EmployeeListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListAssembly.swift; sourceTree = "<group>"; };
 		F5896F1E2899281D0023E073 /* Assemblying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assemblying.swift; sourceTree = "<group>"; };
 		F5A23DED28CED7B0006F5D2B /* EmployeeNoFound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeNoFound.swift; sourceTree = "<group>"; };
+		F5A23DEF28DD9BAF006F5D2B /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeViewModel.swift; sourceTree = "<group>"; };
 		F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeTableViewCell.swift; sourceTree = "<group>"; };
 		F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeImageView.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */,
+				F5A23DEF28DD9BAF006F5D2B /* ThemeManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				F5E2C50228A3932D005C0110 /* EmployeeListRouter.swift in Sources */,
 				F5E2C51528AB61D4005C0110 /* EmployeeDetailsViewController.swift in Sources */,
 				F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */,
+				F5A23DF028DD9BB0006F5D2B /* ThemeManager.swift in Sources */,
 				F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */,
 				F5896F18289923340023E073 /* EmployeeListPresenter.swift in Sources */,
 				F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */,
