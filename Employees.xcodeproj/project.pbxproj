@@ -18,6 +18,9 @@
 		F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5896F1E2899281D0023E073 /* Assemblying.swift */; };
 		F5A23DEE28CED7B1006F5D2B /* EmployeeNoFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DED28CED7B0006F5D2B /* EmployeeNoFound.swift */; };
 		F5A23DF028DD9BB0006F5D2B /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DEF28DD9BAF006F5D2B /* ThemeManager.swift */; };
+		F5A23DF228DDA8CA006F5D2B /* EmployeeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DF128DDA8CA006F5D2B /* EmployeeSettingsViewController.swift */; };
+		F5A23DF628DDB02B006F5D2B /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DF528DDB02B006F5D2B /* RadioButton.swift */; };
+		F5A23DF828E2AD4E006F5D2B /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A23DF728E2AD4D006F5D2B /* SettingsManager.swift */; };
 		F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */; };
 		F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */; };
 		F5E2C4F3289CE2DE005C0110 /* EmployeeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */; };
@@ -55,6 +58,9 @@
 		F5896F1E2899281D0023E073 /* Assemblying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assemblying.swift; sourceTree = "<group>"; };
 		F5A23DED28CED7B0006F5D2B /* EmployeeNoFound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeNoFound.swift; sourceTree = "<group>"; };
 		F5A23DEF28DD9BAF006F5D2B /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		F5A23DF128DDA8CA006F5D2B /* EmployeeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeSettingsViewController.swift; sourceTree = "<group>"; };
+		F5A23DF528DDB02B006F5D2B /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		F5A23DF728E2AD4D006F5D2B /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		F5E2C4E5289BA8FA005C0110 /* EmployeeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeViewModel.swift; sourceTree = "<group>"; };
 		F5E2C4F0289CE2BA005C0110 /* EmployeeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeTableViewCell.swift; sourceTree = "<group>"; };
 		F5E2C4F2289CE2DE005C0110 /* EmployeeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeImageView.swift; sourceTree = "<group>"; };
@@ -131,6 +137,7 @@
 				F5896F1128990C2E0023E073 /* EmployeeList */,
 				F5E2C51328AB61AE005C0110 /* EmployeeDetails */,
 				F5E2C50328A39342005C0110 /* EmployeeError */,
+				F5A23DF328DDA8D8006F5D2B /* EmployeeSettings */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -186,6 +193,23 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		F5A23DF328DDA8D8006F5D2B /* EmployeeSettings */ = {
+			isa = PBXGroup;
+			children = (
+				F5A23DF128DDA8CA006F5D2B /* EmployeeSettingsViewController.swift */,
+				F5A23DF428DDB001006F5D2B /* Views */,
+			);
+			path = EmployeeSettings;
+			sourceTree = "<group>";
+		};
+		F5A23DF428DDB001006F5D2B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F5A23DF528DDB02B006F5D2B /* RadioButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F5E2C4E7289BA901005C0110 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +255,7 @@
 			children = (
 				F5E2C4FF28A0F733005C0110 /* NetworkManager.swift */,
 				F5A23DEF28DD9BAF006F5D2B /* ThemeManager.swift */,
+				F5A23DF728E2AD4D006F5D2B /* SettingsManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -346,9 +371,11 @@
 				F5E2C4F5289CE2FB005C0110 /* EmployeeInfoLabel.swift in Sources */,
 				F5896F1A2899234A0023E073 /* EmployeeListInteractor.swift in Sources */,
 				F5E2C50D28A39DB3005C0110 /* EmployeeErrorPresenter.swift in Sources */,
+				F5A23DF628DDB02B006F5D2B /* RadioButton.swift in Sources */,
 				F5FB342728B86B8100C4A0C4 /* CustomSegmentedButton.swift in Sources */,
 				F5E2C50228A3932D005C0110 /* EmployeeListRouter.swift in Sources */,
 				F5E2C51528AB61D4005C0110 /* EmployeeDetailsViewController.swift in Sources */,
+				F5A23DF228DDA8CA006F5D2B /* EmployeeSettingsViewController.swift in Sources */,
 				F5896F1F2899281D0023E073 /* Assemblying.swift in Sources */,
 				F5A23DF028DD9BB0006F5D2B /* ThemeManager.swift in Sources */,
 				F5E2C4F1289CE2BA005C0110 /* EmployeeTableViewCell.swift in Sources */,
@@ -356,6 +383,7 @@
 				F5E2C4E6289BA8FA005C0110 /* EmployeeViewModel.swift in Sources */,
 				F5E2C51928AB687C005C0110 /* EmployeeDetailsPresenter.swift in Sources */,
 				F5896EFC28990B210023E073 /* AppDelegate.swift in Sources */,
+				F5A23DF828E2AD4E006F5D2B /* SettingsManager.swift in Sources */,
 				F5FB342928B8927C00C4A0C4 /* CustomSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

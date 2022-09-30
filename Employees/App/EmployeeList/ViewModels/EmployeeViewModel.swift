@@ -14,5 +14,6 @@ struct EmployeeViewModel {
     let tag: String
     let position: String
     let avatarUrl: String
-    let department: String
+    let birthYear: String
+    let birthDay: String
 }

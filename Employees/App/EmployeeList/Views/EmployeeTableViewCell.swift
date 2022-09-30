@@ -38,16 +38,28 @@ final class EmployeeTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    private lazy var birthdayLabel: UILabel = {
+        let birthdayLabel = UILabel()
+        birthdayLabel.frame = CGRect(x: 0, y: 0, width: 96, height: 48)
+        birthdayLabel.font =  UIFont(name: "Inter-Regular", size: 15)
+        birthdayLabel.textColor = .basaltGrey
+        birthdayLabel.textAlignment = .right
+        return birthdayLabel
+    }()
+    
+    private lazy var birthdayStackView: UIStackView = {
+        let birthdayStackView = UIStackView(arrangedSubviews: [birthdayLabel])
+        return birthdayStackView
+    }()
+    
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [fotoImage, infoStackView])
+        let stackView = UIStackView(arrangedSubviews: [fotoImage, infoStackView, birthdayStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 16
         return stackView
     }()
-    
-    private lazy var skeletonViews = [fotoImage, nameLabel, positionLabel]
-    
+        
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -72,6 +84,7 @@ final class EmployeeTableViewCell: UITableViewCell {
         nameLabel.text = viewModel.fullName
         tagLabel.text = viewModel.tag
         positionLabel.text = viewModel.position
+        birthdayLabel.text = SettingsManager.shared.sort == .sortBirthday ? viewModel.birthDay : ""
         
         DispatchQueue.global().async {
             NetworkManager.shared.fetchImage(url: viewModel.avatarUrl) { [weak self] result in
@@ -95,18 +108,19 @@ private extension EmployeeTableViewCell {
     private func setupViewCell() {
         self.contentView.addSubview(stackView)
         
-        NSLayoutConstraint.activate(
-            [
-                stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-                stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-                stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-                stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-                                            
-                fotoImage.heightAnchor.constraint(equalToConstant: sizeImage),
-                fotoImage.widthAnchor.constraint(equalToConstant: sizeImage),
-                
-                topSpacerView.heightAnchor.constraint(equalToConstant: 16)
-            ]
-        )
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                                        
+            fotoImage.heightAnchor.constraint(equalToConstant: sizeImage),
+            fotoImage.widthAnchor.constraint(equalToConstant: sizeImage),
+            
+            topSpacerView.heightAnchor.constraint(equalToConstant: 16),
+            
+            birthdayStackView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            birthdayStackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
+        ])
     }
 }

@@ -9,15 +9,22 @@ import UIKit
 
 /// Протокол управления view слоем модуля EmployeeList
 protocol EmployeeListViewInput: AnyObject {
-    /// Установить данные
+    /// Установить исходные данные
     func setEmployeeData(_ viewModels: [EmployeeViewModel])
+    /// Установить отфильтрованные данные
+    func setFilterEmployee(_ viewModels: [EmployeeViewModel])
 }
 
 /// Протокол передачи UI - эвентов слою презентации модуля EmployeeList
 protocol EmployeeListViewOutput {
     /// Информировать о готовности к загрузки данных
     func readyForLoadData()
+    /// Отфильтровать и отсортировать данные
+    func filterContent(_ search: String, category: Department)
+    /// Показать детальную информацию
     func showDetailsInfo(at id: String)
+    /// Показать экран настроек
+    func showSettings()
 }
 
 final class EmployeeListViewController: UIViewController {
@@ -28,33 +35,23 @@ final class EmployeeListViewController: UIViewController {
     private let assembler = EmployeeListAssembly()
     private var viewModels: [EmployeeViewModel] = [] {
         didSet {
-            filterContentForSearchText(searchBar.text ?? "", category: category)
+            setSections()
+            tableView.reloadData()
             if refreshControl.isRefreshing {
                 refreshControl.endRefreshing()
             }
         }
     }
-    
-    private var filteredViewModels: [EmployeeViewModel] = [] {
-        didSet {
-            tableView.reloadData()
-            if dataLoadingFinished {
-                employeeNoFoundView.isHidden = !(filteredViewModels.count == 0)
-            }
-        }
-    }
-    
+     
+    private var sections: [String] = []
+        
     private var keyboardHeight: CGFloat = 0.0 {
         didSet {
             bottomConstraintView.constant = -keyboardHeight
             view.layoutIfNeeded()
         }
     }
-    
-    private var isSearchBarEmpty: Bool {
-      return searchBar.text?.isEmpty ?? true
-    }
-    
+        
     private var category: Department {
         guard customSegmentedControl.tabs.count > 0,
                 let index = customSegmentedControl.tabs.firstIndex(of: curentTab)
@@ -62,6 +59,12 @@ final class EmployeeListViewController: UIViewController {
         return Department.allCases[index]
     }
     
+    private var typeSort: SettingsSort = SettingsManager.shared.sort {
+        didSet {
+            presenter.filterContent(searchBar.text ?? "", category: category)
+        }
+    }
+        
     private var dataLoadingFinished: Bool = false
     private var bottomConstraintView: NSLayoutConstraint!
     private var curentTab: CustomSegmentedButton!
@@ -89,6 +92,8 @@ final class EmployeeListViewController: UIViewController {
         textField?.autocorrectionType = .no
         searchBar.placeholder = "Введи имя, тег..."
         searchBar.setValue("Отмена", forKey: "cancelButtonText")
+        searchBar.showsBookmarkButton = true
+        searchBar.setImage(UIImage(named: "Sort"), for: .bookmark, state: .normal)
         return searchBar
     }()
     
@@ -126,12 +131,14 @@ final class EmployeeListViewController: UIViewController {
         presenter.readyForLoadData()
         
         registerForKeyboardNotifications()
+        registerSettingsObserver()
         
         ThemeManager.applyTheme()
     }
-    
+        
     deinit {
         removeKeyboardNotifications()
+        removeSettingsObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,6 +147,13 @@ final class EmployeeListViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == Settings.sortEmployee.rawValue {
+            guard let newValue = change?[.newKey] as? String else { return }
+            typeSort = SettingsSort.init(rawValue: newValue) ?? .sortAlphabet
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -156,7 +170,7 @@ final class EmployeeListViewController: UIViewController {
             button.isSelected = button == sender
             if button.isSelected {
                 curentTab = button
-                filterContentForSearchText(searchBar.text ?? "", category: category)
+                presenter.filterContent(searchBar.text ?? "", category: category)
             }
         }
     }
@@ -178,21 +192,80 @@ extension EmployeeListViewController: EmployeeListViewInput {
         self.viewModels = viewModels
         dataLoadingFinished = true
     }
+    
+    func setFilterEmployee(_ viewModels: [EmployeeViewModel]) {
+        self.viewModels = viewModels
+    }
 }
 
 // MARK: - UITableViewDataSource
 extension EmployeeListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        filteredViewModels.count
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if typeSort == .sortBirthday { return sections.count }
+        return 1
     }
-    
+        
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if typeSort == .sortBirthday {
+            return (viewModels.filter { $0.birthYear == sections[section] }).count
+        }
+        return viewModels.count
+    }
+        
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard typeSort == .sortBirthday else { return UIView() }
+        
+        let sectionView = UIView()
+        sectionView.frame = CGRect(x: 0, y: 0, width: 0, height: 68)
+                
+        let yearLabel = UILabel()
+        yearLabel.frame = CGRect(x: 0, y: 0, width: 160, height: 20)
+        yearLabel.font = UIFont(name: "Inter-Medium", size: 15)
+        yearLabel.textColor = .customPurple
+        yearLabel.textAlignment = .center
+        yearLabel.text = sections[section]
+        
+        let leftlineView = UIView()
+        leftlineView.backgroundColor = .customPurple
+        
+        let rightlineView = UIView()
+        rightlineView.backgroundColor = .customPurple
+        
+        let stackView = UIStackView(arrangedSubviews: [leftlineView, yearLabel, rightlineView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        sectionView.addSubview(stackView)
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: sectionView.topAnchor, constant: 24),
+            stackView.bottomAnchor.constraint(equalTo: sectionView.bottomAnchor, constant: -24),
+            stackView.leftAnchor.constraint(equalTo: sectionView.leftAnchor, constant: 24),
+            stackView.rightAnchor.constraint(equalTo: sectionView.rightAnchor, constant: -24),
+            
+            yearLabel.widthAnchor.constraint(equalToConstant: 160),
+            
+            leftlineView.heightAnchor.constraint(equalToConstant: 1),
+            rightlineView.heightAnchor.constraint(equalToConstant: 1),
+        ])
+        
+        return sectionView
+    }
+        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: EmployeeTableViewCell.cellIdentififer,
             for: indexPath) as? EmployeeTableViewCell else {
             return UITableViewCell()
         }
-        let viewModel = filteredViewModels[indexPath.row]
+        if typeSort == .sortBirthday {
+            let viewModelsSection = viewModels.filter { $0.birthYear == sections[indexPath.section] }
+            let viewModel = viewModelsSection[indexPath.row]
+            cell.configure(viewModel)
+            return cell
+        }
+        let viewModel = viewModels[indexPath.row]
         cell.configure(viewModel)
         return cell
     }
@@ -203,8 +276,13 @@ extension EmployeeListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         84.0
     }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        68.0
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let employeeVM = filteredViewModels[indexPath.row]
+        let employeeVM = viewModels[indexPath.row]
         presenter.showDetailsInfo(at: employeeVM.id)
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.isSelected = false
@@ -214,28 +292,30 @@ extension EmployeeListViewController: UITableViewDelegate {
 // MARK: - UISearchBarDelegate
 extension EmployeeListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filterContentForSearchText(searchBar.text!, category: category)
+        presenter.filterContent(searchBar.text!, category: category)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(true, animated: true)
+        searchBar.showsBookmarkButton = false
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = nil
         searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.showsBookmarkButton = true
         searchBar.endEditing(true)
         
-        filterContentForSearchText(searchBar.text!, category: category)
+        presenter.filterContent(searchBar.text!, category: category)
+    }
+    
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        presenter.showSettings()
     }
 }
 
 // MARK: - Private method
 private extension EmployeeListViewController {
-    
-    func registerCell() {
-        tableView.register(EmployeeTableViewCell.self, forCellReuseIdentifier: EmployeeTableViewCell.cellIdentififer)
-    }
     
     func setupView() {
         self.view.addSubview(tableView)
@@ -252,49 +332,57 @@ private extension EmployeeListViewController {
         employeeNoFoundView.isHidden = true
         bottomConstraintView = employeeNoFoundView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
      
-        NSLayoutConstraint.activate(
-            [
-                topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                topView.heightAnchor.constraint(equalToConstant: 90),
-                
-                tableView.topAnchor.constraint(equalTo: topView.bottomAnchor),
-                tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                
-                employeeNoFoundView.topAnchor.constraint(equalTo: topView.bottomAnchor),
-                employeeNoFoundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                employeeNoFoundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                bottomConstraintView,
-                
-                searchBar.topAnchor.constraint(equalTo: topView.topAnchor),
-                searchBar.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 8),
-                searchBar.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -8),
-                searchBar.heightAnchor.constraint(equalToConstant: 40),
-                
-                customSegmentedControl.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 14),
-                customSegmentedControl.leadingAnchor.constraint(equalTo: topView.leadingAnchor),
-                customSegmentedControl.trailingAnchor.constraint(equalTo: topView.trailingAnchor),
-                customSegmentedControl.heightAnchor.constraint(equalToConstant: 36),
-            ]
+        NSLayoutConstraint.activate([
+            topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topView.heightAnchor.constraint(equalToConstant: 90),
+            
+            tableView.topAnchor.constraint(equalTo: topView.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            employeeNoFoundView.topAnchor.constraint(equalTo: topView.bottomAnchor),
+            employeeNoFoundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            employeeNoFoundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomConstraintView,
+            
+            searchBar.topAnchor.constraint(equalTo: topView.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 8),
+            searchBar.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -8),
+            searchBar.heightAnchor.constraint(equalToConstant: 40),
+            
+            customSegmentedControl.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 14),
+            customSegmentedControl.leadingAnchor.constraint(equalTo: topView.leadingAnchor),
+            customSegmentedControl.trailingAnchor.constraint(equalTo: topView.trailingAnchor),
+            customSegmentedControl.heightAnchor.constraint(equalToConstant: 36),
+        ])
+    }
+     
+    func registerCell() {
+        tableView.register(EmployeeTableViewCell.self, forCellReuseIdentifier: EmployeeTableViewCell.cellIdentififer)
+    }
+     
+    func setSections() {
+        sections.removeAll()
+        guard typeSort == .sortBirthday else { return }
+        viewModels.forEach { viewModel in
+            if !sections.contains(viewModel.birthYear) { sections.append(viewModel.birthYear) }
+        }
+    }
+    
+    func registerSettingsObserver() {
+         UserDefaults.standard.addObserver(
+            self,
+            forKeyPath: Settings.sortEmployee.rawValue,
+            options: .new,
+            context: nil
         )
     }
     
-    func filterContentForSearchText(_ searchText: String, category: Department = .all) {
-        filteredViewModels = viewModels.filter { (employee: EmployeeViewModel) -> Bool in
-            let doesCategoryMatch = category == .all || employee.department == category.name
-            
-            if isSearchBarEmpty {
-                return doesCategoryMatch
-            } else {
-                let doesSearch = employee.fullName.lowercased().contains(searchText.lowercased())
-                    || employee.tag.lowercased().contains(searchText.lowercased())
-                
-                return doesCategoryMatch && doesSearch
-            }
-        }
+    func removeSettingsObserver() {
+        UserDefaults.standard.removeObserver(self, forKeyPath: Settings.sortEmployee.rawValue)
     }
     
     func registerForKeyboardNotifications() {

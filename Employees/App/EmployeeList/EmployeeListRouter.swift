@@ -11,6 +11,7 @@ enum Target {
     case tableView
     case detailView
     case errorView
+    case sortView
 }
 
 protocol EmployeeListRoutable {
@@ -43,6 +44,11 @@ extension EmployeeListRouter: EmployeeListRoutable {
             let nextView = EmployeeDetailsViewController()
             EmployeeDetailsAssembly().assembly(viewController: nextView, sender: data)
             sourceView.navigationController?.pushViewController(nextView, animated: true)
+        }
+        if target == .sortView {
+            let nextView = EmployeeSettingsViewController()
+            let navigationController = UINavigationController(rootViewController: nextView)
+            sourceView.present(navigationController, animated: true)
         }
     }
 }
