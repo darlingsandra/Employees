@@ -37,6 +37,7 @@ final class EmployeeListViewController: UIViewController {
         didSet {
             setSections()
             tableView.reloadData()
+            employeeNoFoundView.isHidden = !viewModels.isEmpty
             if refreshControl.isRefreshing {
                 refreshControl.endRefreshing()
             }
