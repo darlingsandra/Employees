@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "flying-saucer.png",
+      "filename" : "Flying-saucer@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "flying-saucer-1.png",
+      "filename" : "Flying-saucer@2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "flying-saucer-2.png",
+      "filename" : "Flying-saucer@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

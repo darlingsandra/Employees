@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Find.png",
+      "filename" : "Find@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Find-1.png",
+      "filename" : "Find@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Find-2.png",
+      "filename" : "Find@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
