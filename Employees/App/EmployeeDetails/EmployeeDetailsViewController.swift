@@ -143,6 +143,7 @@ class EmployeeDetailsViewController: UIViewController {
         view.backgroundColor = .systemBackground
         fotoImage.image = UIImage(named: "Goose")
         presenter.readyShowData()
+        setupNavigationBar()
         setupView()
     }
     
@@ -150,6 +151,10 @@ class EmployeeDetailsViewController: UIViewController {
         if let url = URL(string: "tel://\(viewModel?.call ?? "")") {
             UIApplication.shared.open(url)
         }
+    }
+    
+    @objc func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -173,20 +178,30 @@ private extension EmployeeDetailsViewController {
         detailsStackView.layoutMargins = UIEdgeInsets(top: 27, left: 20, bottom: 0, right: 20)
         detailsStackView.isLayoutMarginsRelativeArrangement = true
         
-        NSLayoutConstraint.activate(
-            [
-                topSpacerView.heightAnchor.constraint(equalToConstant: 72),
-                fotoImage.heightAnchor.constraint(equalToConstant: sizeImage),
-                
-                birthdayLabel.heightAnchor.constraint(equalToConstant: 20),
-                phoneButton.heightAnchor.constraint(equalToConstant: 20),
+        NSLayoutConstraint.activate([
+            topSpacerView.heightAnchor.constraint(equalToConstant: 72),
+            fotoImage.heightAnchor.constraint(equalToConstant: sizeImage),
+            
+            birthdayLabel.heightAnchor.constraint(equalToConstant: 20),
+            phoneButton.heightAnchor.constraint(equalToConstant: 20),
 
-                stackView.topAnchor.constraint(equalTo: view.topAnchor),
-                stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ]
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    func setupNavigationBar() {     
+        let backButton = UIBarButtonItem(
+            image: UIImage(named: "BackImage"),
+            style: .plain,
+            target: self,
+            action: #selector(self.didTapBackButton)
         )
+        backButton.tintColor = .black
+                
+        navigationItem.leftBarButtonItem = backButton
     }
     
     func setTitlePhone(button: UIButton, title: String) {

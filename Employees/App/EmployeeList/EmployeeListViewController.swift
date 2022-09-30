@@ -62,10 +62,11 @@ final class EmployeeListViewController: UIViewController {
     
     private var typeSort: SettingsSort = SettingsManager.shared.sort {
         didSet {
+            setImageSort()
             presenter.filterContent(searchBar.text ?? "", category: category)
         }
     }
-        
+    
     private var dataLoadingFinished: Bool = false
     private var bottomConstraintView: NSLayoutConstraint!
     private var curentTab: CustomSegmentedButton!
@@ -94,7 +95,7 @@ final class EmployeeListViewController: UIViewController {
         searchBar.placeholder = "Введи имя, тег..."
         searchBar.setValue("Отмена", forKey: "cancelButtonText")
         searchBar.showsBookmarkButton = true
-        searchBar.setImage(UIImage(named: "Sort"), for: .bookmark, state: .normal)
+//        searchBar.setImage(UIImage(named: "Sort"), for: .bookmark, state: .normal)
         return searchBar
     }()
     
@@ -127,6 +128,7 @@ final class EmployeeListViewController: UIViewController {
         
         registerCell()
         setupView()
+        setImageSort()
         
         assembler.assembly(viewController: self)
         presenter.readyForLoadData()
@@ -371,6 +373,11 @@ private extension EmployeeListViewController {
         viewModels.forEach { viewModel in
             if !sections.contains(viewModel.birthYear) { sections.append(viewModel.birthYear) }
         }
+    }
+    
+    func setImageSort() {
+        let nameImage = typeSort == .sortAlphabet ? "Sort" : "SortEnable"
+        searchBar.setImage(UIImage(named: nameImage), for: .bookmark, state: .normal)
     }
     
     func registerSettingsObserver() {
