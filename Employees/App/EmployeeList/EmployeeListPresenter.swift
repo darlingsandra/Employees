@@ -53,10 +53,7 @@ extension EmployeeListPresenter: EmployeeListViewOutput {
 extension EmployeeListPresenter: EmployeeListInteractorOutput {
     func receiveEmployeeData(_ employees: [Employee]) {
         self.employees = employees
-        let viewModels = employees
-            .sorted { isSortEmployee(item1: $0, item2: $1, sort: SettingsManager.shared.sort) }
-            .map { createEmployeeViewModel($0) }
-        view?.setEmployeeData(viewModels)
+        view?.employeeDataLoaded()
     }
     
     func receiveEmployeeDataError() {

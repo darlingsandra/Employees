@@ -10,7 +10,7 @@ import UIKit
 /// Протокол управления view слоем модуля EmployeeList
 protocol EmployeeListViewInput: AnyObject {
     /// Установить исходные данные
-    func setEmployeeData(_ viewModels: [EmployeeViewModel])
+    func employeeDataLoaded()
     /// Установить отфильтрованные данные
     func setFilterEmployee(_ viewModels: [EmployeeViewModel])
 }
@@ -67,7 +67,6 @@ final class EmployeeListViewController: UIViewController {
         }
     }
     
-    private var dataLoadingFinished: Bool = false
     private var bottomConstraintView: NSLayoutConstraint!
     private var curentTab: CustomSegmentedButton!
     
@@ -95,7 +94,6 @@ final class EmployeeListViewController: UIViewController {
         searchBar.placeholder = "Введи имя, тег..."
         searchBar.setValue("Отмена", forKey: "cancelButtonText")
         searchBar.showsBookmarkButton = true
-//        searchBar.setImage(UIImage(named: "Sort"), for: .bookmark, state: .normal)
         return searchBar
     }()
     
@@ -193,9 +191,8 @@ final class EmployeeListViewController: UIViewController {
 
 // MARK: - EmployeeListViewInput
 extension EmployeeListViewController: EmployeeListViewInput {
-    func setEmployeeData(_ viewModels: [EmployeeViewModel]) {
-        self.viewModels = viewModels
-        dataLoadingFinished = true
+    func employeeDataLoaded() {
+        presenter.filterContent(searchBar.text ?? "", category: category)
     }
     
     func setFilterEmployee(_ viewModels: [EmployeeViewModel]) {
