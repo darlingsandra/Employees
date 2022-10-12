@@ -47,7 +47,7 @@ struct EmployeeList: Decodable {
 
 struct Employee: Decodable {
     let id: String
-    let avatarUrl: String
+    var avatarUrl: String
     let firstName: String
     let lastName: String
     let userTag: String
@@ -55,6 +55,45 @@ struct Employee: Decodable {
     let position: String
     let birthday: String
     let phone: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id, avatarUrl, avatarUrlRandom, firstName, lastName, userTag, department, position, birthday, phone
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.avatarUrl = "https://i.pravatar.cc/300?img=\(Int.random(in: 1...70))"
+        self.id = try container.decode(String.self, forKey: .id)
+        self.firstName = try container.decode(String.self, forKey: .firstName)
+        self.lastName = try container.decode(String.self, forKey: .lastName)
+        self.userTag = try container.decode(String.self, forKey: .userTag)
+        self.department = try container.decode(String.self, forKey: .department)
+        self.position = try container.decode(String.self, forKey: .position)
+        self.birthday = try container.decode(String.self, forKey: .birthday)
+        self.phone = try container.decode(String.self, forKey: .phone)
+    }
+    
+    init(id: String,
+         avatarUrl: String,
+         avatarUrlRandom: String? = nil,
+         firstName: String,
+         lastName: String,
+         userTag: String,
+         department: String,
+         position: String,
+         birthday: String,
+         phone: String) {
+        
+        self.id = id
+        self.avatarUrl = "https://i.pravatar.cc/300?img=\(Int.random(in: 1...70))"
+        self.firstName = firstName
+        self.lastName = lastName
+        self.userTag = userTag
+        self.department = department
+        self.position = position
+        self.birthday = birthday
+        self.phone = phone
+    }
     
     static func getEmployees() -> [Employee] {
         [

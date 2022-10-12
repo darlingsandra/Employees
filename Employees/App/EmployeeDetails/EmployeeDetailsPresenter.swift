@@ -21,7 +21,14 @@ final class EmployeeDetailsPresenter {
 extension EmployeeDetailsPresenter: EmployeeDetailsViewOutput {
     func readyShowData() {
         guard let employee = employee else { return }
-        let viewModel = EmployeeDetailsViewModel(
+        view?.setEmployeeData(viewModel: createEmployeeDetailsViewModel(employee))
+    }
+}
+
+private extension EmployeeDetailsPresenter {
+    
+    func createEmployeeDetailsViewModel(_ employee: Employee) -> EmployeeDetailsViewModel {
+        EmployeeDetailsViewModel(
             fullName: "\(employee.firstName) \(employee.lastName)",
             tag: employee.userTag.lowercased(),
             position: employee.position,
@@ -31,12 +38,8 @@ extension EmployeeDetailsPresenter: EmployeeDetailsViewOutput {
             phone: getFormatPhone(phoneNumber: employee.phone, cleanNumber: false) ?? "",
             call: getFormatPhone(phoneNumber: employee.phone, cleanNumber: true) ?? ""
         )
-        view?.setEmployeeData(viewModel: viewModel)
     }
-}
-
-private extension EmployeeDetailsPresenter {
-
+    
     func getFormatDate(from string: String) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy'-'MM'-'dd'"

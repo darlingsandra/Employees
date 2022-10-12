@@ -245,9 +245,7 @@ extension EmployeeListViewController: UITableViewDataSource {
             stackView.bottomAnchor.constraint(equalTo: sectionView.bottomAnchor, constant: -24),
             stackView.leftAnchor.constraint(equalTo: sectionView.leftAnchor, constant: 24),
             stackView.rightAnchor.constraint(equalTo: sectionView.rightAnchor, constant: -24),
-            
-            yearLabel.widthAnchor.constraint(equalToConstant: 160),
-            
+                        
             leftlineView.heightAnchor.constraint(equalToConstant: 1),
             rightlineView.heightAnchor.constraint(equalToConstant: 1),
         ])
@@ -284,8 +282,14 @@ extension EmployeeListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let employeeVM = viewModels[indexPath.row]
-        presenter.showDetailsInfo(at: employeeVM.id)
+        if typeSort == .sortBirthday {
+            let viewModelsSection = viewModels.filter { $0.birthYear == sections[indexPath.section] }
+            let employeeVM = viewModelsSection[indexPath.row]
+            presenter.showDetailsInfo(at: employeeVM.id)
+        } else {
+            let employeeVM = viewModels[indexPath.row]
+            presenter.showDetailsInfo(at: employeeVM.id)
+        }
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.isSelected = false
     }

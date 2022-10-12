@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum NetworkError: Error {
     case invalidURL
@@ -20,6 +21,7 @@ enum API: String {
 final class NetworkManager {
     
     static let shared = NetworkManager()
+    private var imageCache = NSCache<NSString, UIImage>()
     
     private init() {}
     
@@ -51,16 +53,28 @@ final class NetworkManager {
         }.resume()
     }
     
-    func fetchImage(url: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+    func fetchImage(url: String, completion: @escaping (UIImage?) -> Void) {
         guard let url = URL(string: url) else {
-            completion(.failure(.invalidURL))
+            completion(UIImage(named: "Goose"))
             return
         }
-        do {
-            let data = try Data(contentsOf: url)
-            completion(.success(data))
-        } catch {
-            completion(.failure(.noData))
+        
+        if let cachedImage = imageCache.object(forKey: url.absoluteString as NSString) {
+            completion(cachedImage)
+            return
+        }
+        
+        DispatchQueue.global().async {
+            guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
+                DispatchQueue.main.async {
+                    completion(UIImage(named: "Goose"))
+                }
+                return
+            }
+            self.imageCache.setObject(image, forKey: url.absoluteString as NSString)
+            DispatchQueue.main.async {
+                completion(image)
+            }
         }
     }
 }

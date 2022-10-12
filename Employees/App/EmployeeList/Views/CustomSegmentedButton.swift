@@ -88,8 +88,8 @@ private extension CustomSegmentedButton {
         underline.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             underline.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            underline.leftAnchor.constraint(equalTo: self.leftAnchor),
-            underline.rightAnchor.constraint(equalTo: self.rightAnchor),
+            underline.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            underline.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             underline.heightAnchor.constraint(equalToConstant: 2),
         ])
     }

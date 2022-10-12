@@ -19,6 +19,7 @@ final class EmployeeTableViewCell: UITableViewCell {
     private var viewModel: EmployeeViewModel?
     
     private let sizeImage: CGFloat = 72
+    private lazy var activityIndicator = UIActivityIndicatorView()
     private lazy var fotoImage = EmployeeImageView(size: sizeImage)
     private lazy var trailingSpacerView = UIView()
     private lazy var bottomSpacerView = UIView()
@@ -63,7 +64,10 @@ final class EmployeeTableViewCell: UITableViewCell {
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        fotoImage.image = UIImage(named: "Goose")
+        
+        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false
+        
         setupViewCell()
     }
     
@@ -86,19 +90,10 @@ final class EmployeeTableViewCell: UITableViewCell {
         positionLabel.text = viewModel.position
         birthdayLabel.text = SettingsManager.shared.sort == .sortBirthday ? viewModel.birthDay : ""
         
-        DispatchQueue.global().async {
-            NetworkManager.shared.fetchImage(url: viewModel.avatarUrl) { [weak self] result in
-                switch result {
-                case .success(let dataImage):
-                    DispatchQueue.main.async {
-                        self?.fotoImage.image = UIImage(data: dataImage)
-                    }
-                case .failure(_):
-                    DispatchQueue.main.async {
-                        self?.fotoImage.image = UIImage(named: "Goose")
-                    }
-                }
-            }
+        NetworkManager.shared.fetchImage(url: viewModel.avatarUrl) { image in
+            self.fotoImage.image = image
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
         }
     }
 }
@@ -107,6 +102,8 @@ final class EmployeeTableViewCell: UITableViewCell {
 private extension EmployeeTableViewCell {
     private func setupViewCell() {
         self.contentView.addSubview(stackView)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        fotoImage.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -120,7 +117,10 @@ private extension EmployeeTableViewCell {
             topSpacerView.heightAnchor.constraint(equalToConstant: 16),
             
             birthdayStackView.topAnchor.constraint(equalTo: stackView.topAnchor),
-            birthdayStackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
+            birthdayStackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: fotoImage.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: fotoImage.centerYAnchor),
         ])
     }
 }

@@ -105,8 +105,17 @@ class EmployeeDetailsViewController: UIViewController {
         return stackView
     }()
     
+    private lazy var fotoStackView: UIStackView = {
+        let fotoStackView = UIStackView(arrangedSubviews: [UIView(), fotoImage, UIView()])
+        fotoStackView.translatesAutoresizingMaskIntoConstraints = false
+        fotoStackView.distribution = .equalCentering
+        fotoStackView.alignment = .center
+        fotoStackView.axis = .horizontal
+        return fotoStackView
+    }()
+    
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [fotoImage, infoStackView])
+        let stackView = UIStackView(arrangedSubviews: [fotoStackView, infoStackView])
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
         stackView.spacing = 24
@@ -141,10 +150,13 @@ class EmployeeDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        fotoImage.image = UIImage(named: "Goose")
         presenter.readyShowData()
         setupNavigationBar()
         setupView()
+        
+        NetworkManager.shared.fetchImage(url: viewModel?.avatarUrl ?? "") { image in
+            self.fotoImage.image = image
+        }
     }
     
     @objc func tapPhoneButton() {
@@ -180,7 +192,9 @@ private extension EmployeeDetailsViewController {
         
         NSLayoutConstraint.activate([
             topSpacerView.heightAnchor.constraint(equalToConstant: 72),
+            
             fotoImage.heightAnchor.constraint(equalToConstant: sizeImage),
+            fotoImage.widthAnchor.constraint(equalToConstant: sizeImage),
             
             birthdayLabel.heightAnchor.constraint(equalToConstant: 20),
             phoneButton.heightAnchor.constraint(equalToConstant: 20),
