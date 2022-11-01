@@ -57,7 +57,7 @@ struct Employee: Decodable {
     let phone: String
     
     enum CodingKeys: String, CodingKey {
-        case id, avatarUrl, avatarUrlRandom, firstName, lastName, userTag, department, position, birthday, phone
+        case id, avatarUrl, firstName, lastName, userTag, department, position, birthday, phone
     }
     
     init(from decoder: Decoder) throws {
